@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: ["main"]
 jobs:
-  label_issues:
+  merge-conflicts:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -13,7 +13,31 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            const repos = await github.rest.pulls.list({
+            const repos = (await github.rest.pulls.list({
                 ...context.repo
+            })).data
+            const promises = repos.map(repo => {
+                const { number } = repo
+                return github.rest.pulls.get({
+                    ...context.repo,
+                    pull_number: number
+                })
             })
-            console.log(repos)
+            const prs = await Promise.allSettled(promises)
+            prs.forEach(pr => {
+                const data = pr.value.data
+                if (data.mergeable === false) {
+                    github.rest.issues.addLabels({
+                        ...context.repo,
+                        issue_number: data.number,
+                        labels: ["merge conflict"]
+                    })
+                } else if (data.mergeable === true 
+                    && data.labels.some(label => label.name === "merge conflict")) {
+                            github.rest.issues.removeLabel({
+                                ...context.repo,
+                                issue_number: data.number,
+                                name: "merge conflict"
+                            })
+                    }
+            })
