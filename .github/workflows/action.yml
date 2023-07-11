@@ -13,7 +13,7 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            const repos = await github.rest.pulls.list({
+            const repos = (await github.rest.pulls.list({
                 ...context.repo
-            })
+            })).data
             console.log(repos)
