@@ -16,7 +16,6 @@ jobs:
             const repos = (await github.rest.pulls.list({
                 ...context.repo
             })).data
-            console.log(repos)
             const promises = repos.map(repo => {
                 const { number } = repo
                 return github.rest.pulls.get({
@@ -24,5 +23,7 @@ jobs:
                     pull_number: number
                 })
             })
-            const results = await Promise.allSettled(promises)
-            console.log(results)
+            const prs = await Promise.allSettled(promises)
+            pres.data.forEach(pr => {
+                console.log(pr)
+            })
