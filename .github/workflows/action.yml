@@ -17,7 +17,7 @@ jobs:
                 ...context.repo
             })).data
             console.log(repos)
-            const promises = repos.data.map(repo => {
+            const promises = repos.map(repo => {
                 const { number } = repo
                 return github.rest.pulls.get({
                     ...context.repo,
