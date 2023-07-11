@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: ["main"]
 jobs:
-  label_issues:
+  merge-conflicts:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
