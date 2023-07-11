@@ -1,4 +1,4 @@
-name: Tag Conflicts
+name: Tag Merge Conflicts
 on:
   push:
     branches: ["main"]
@@ -32,5 +32,12 @@ jobs:
                         issue_number: pr.value.data.number,
                         labels: ["merge conflict"]
                     })
-                }
+                } else if (pr.value.data.mergeable === true 
+                    && pr.value.data.labels.some(label => label.name === "merge conflict")) {
+                        github.rest.issues.removeLabel({
+                            ...context.repo,
+                            issue_number: pr.value.data.number,
+                            name: "merge conflict"
+                        })
+                    }
             })
