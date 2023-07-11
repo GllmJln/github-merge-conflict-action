@@ -1,4 +1,4 @@
-name: Label PRs
+name: Tag Merge Conflicts
 on:
   push:
     branches: ["main"]
