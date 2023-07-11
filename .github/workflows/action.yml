@@ -25,5 +25,5 @@ jobs:
             })
             const prs = await Promise.allSettled(promises)
             prs.forEach(pr => {
-                console.log(pr)
+                console.log(pr.value.data)
             })
