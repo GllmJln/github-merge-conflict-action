@@ -25,5 +25,12 @@ jobs:
             })
             const prs = await Promise.allSettled(promises)
             prs.forEach(pr => {
-                console.log(pr.value.data)
+                console.log(pr.value.data.mergeable)
+                if (pr.value.data.mergeable === false) {
+                    github.rest.issues.addLabels({
+                        ...context.repo,
+                        issue_number: pr.value.data.number,
+                        labels: ["merge conflict"]
+                    })
+                }
             })
