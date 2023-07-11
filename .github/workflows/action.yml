@@ -20,7 +20,7 @@ jobs:
                 const { number } = repo
                 return github.rest.pulls.get({
                     ...context.repo,
-                    pull_number = number
+                    pull_number: number
                 })
             })
             const results = await Promise.allSettled(promises)
