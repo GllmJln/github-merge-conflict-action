@@ -44,13 +44,13 @@ jobs:
                               issue_number: data.number,
                               name: "merge conflict"
                           })
-                  } else {
+                  } else if (data.mergeable === null) {
                     prsAwaitingCheck.push({...data})
                   }
               })
 
               if (prsAwaitingCheck.length) {
-                console.log(prsAwaitingCheck)
+                console.log("Some PRs are still waiting to calculate status...")
                 await new Promise(resolve => setTimeout(resolve, 5000))
                 addMergeConflictTag(prsAwaitingCheck)
               }
