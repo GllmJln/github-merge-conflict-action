@@ -50,6 +50,7 @@ jobs:
               })
 
               if (prsAwaitingCheck.length) {
+                console.log(prsAwaitingCheck)
                 await new Promise(resolve => setTimeout(resolve, 5000))
                 addMergeConflictTag(prsAwaitingCheck)
               }
