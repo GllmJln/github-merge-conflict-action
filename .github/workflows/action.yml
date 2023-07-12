@@ -13,13 +13,13 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            const repos = (await github.rest.pulls.list({
+            const pullRequests = (await github.rest.pulls.list({
                 ...context.repo
             })).data
 
-            const addMergeConflictTag = async (repos) => {
-              const promises = repos.map(repo => {
-                  const { number } = repo
+            const addMergeConflictTag = async (pullRequests) => {
+              const promises = pullRequests.map(pr => {
+                  const { number } = pr
                   return github.rest.pulls.get({
                       ...context.repo,
                       pull_number: number
@@ -57,4 +57,4 @@ jobs:
 
             }
 
-            await addMergeConflictTag(repos)
+            await addMergeConflictTag(pullRequests)
